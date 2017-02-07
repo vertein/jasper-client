@@ -16,6 +16,7 @@ from client import diagnose
 from client.conversation import Conversation
 
 # Add jasperpath.LIB_PATH to sys.path
+# Adds the client folder to the sys.path for executables
 sys.path.append(jasperpath.LIB_PATH)
 
 parser = argparse.ArgumentParser(description='Jasper Voice Control Center')
@@ -38,7 +39,9 @@ class Jasper(object):
     def __init__(self):
         self._logger = logging.getLogger(__name__)
 
+
         # Create config dir if it does not exist yet
+        # creates the ~/.jasper
         if not os.path.exists(jasperpath.CONFIG_PATH):
             try:
                 os.makedirs(jasperpath.CONFIG_PATH)
@@ -92,6 +95,7 @@ class Jasper(object):
 
         try:
             slug = self.config['stt_passive_engine']
+            self._logger.debug("Going to do some passive engining")
             stt_passive_engine_class = stt.get_engine_by_slug(slug)
         except KeyError:
             stt_passive_engine_class = stt_engine_class
