@@ -181,10 +181,11 @@ class GoogleTTS(AbstractMp3TTSEngine):
         tts = gtts.gTTS(text=phrase, lang=self.language)
         with tempfile.NamedTemporaryFile(suffix='.mp3', delete=False) as f:
             tmpfile = f.name
-            self._logger.debug("Can I call the tmpfile out here? %s", tmpfile)
-            timCmd = "gtts-cli.py \""+phrase+"\"-l \'en\' -o"+tmpfile
-            self._logger.debug("Going to call this: %s", timCmd)
-            subprocess.call(timCmd)
+        self._logger.debug("Can I call the tmpfile out here? %s", tmpfile)
+        timCmd = "gtts-cli.py \""+phrase+"\" -l \'en\' -o "+f.name
+        self._logger.debug("Going to call this: %s", timCmd)
+        tts.save(tmpfile)
+        self._logger.debug("Saved to file %s", tmpfile)
         self.play_mp3(tmpfile)
         os.remove(tmpfile)
 
